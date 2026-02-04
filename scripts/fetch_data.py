@@ -17,9 +17,9 @@ API_KEY = os.environ.get('GRAPH_API_KEY', '')
 
 # Subgraph IDs for Aave V3
 SUBGRAPH_IDS = {
-    "ethereum": "Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g",
-    "arbitrum": "DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B",
-    "polygon": "H1sUFC6wxo3CmwwBLMwLNqp5pBhdfwYioUd3MYhXNsUi",
+    "ethereum": "JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk",
+    "arbitrum": "4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf",
+    "polygon": "6yuf1C49aWEscgk5n9D1DekeG1BCk5Z9imJYJT3sVmAT",
     "base": "GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF"
 }
 
