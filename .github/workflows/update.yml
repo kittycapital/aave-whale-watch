@@ -1,0 +1,86 @@
+name: 🐋 Update Aave Data
+
+on:
+  # 4시간마다 실행 (UTC 기준: 0, 4, 8, 12, 16, 20시)
+  schedule:
+    - cron: '0 */4 * * *'
+  
+  # 수동 실행
+  workflow_dispatch:
+  
+  # Push 시에도 실행 (테스트용)
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📊 Fetch Aave Data
+        run: |
+          cd scripts
+          python fetch_data.py
+        env:
+          # Optional: The Graph API key for decentralized network
+          # GRAPH_API_KEY: ${{ secrets.GRAPH_API_KEY }}
+          PYTHONUNBUFFERED: '1'
+      
+      - name: 📝 Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code data/ || echo "changes=true" >> $GITHUB_OUTPUT
+      
+      - name: 🚀 Commit and Push
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Add timestamp to commit message
+          TIMESTAMP=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+          
+          git add data/
+          git commit -m "🐋 데이터 업데이트: ${TIMESTAMP}"
+          git push
+      
+      - name: ✅ Summary
+        run: |
+          echo "## 🐋 Aave Whale Watch Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**업데이트 시간:** $(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f data/ethereum.json ]; then
+            ETH_COUNT=$(cat data/ethereum.json | python -c "import sys, json; print(len(json.load(sys.stdin).get('positions', [])))")
+            echo "- **Ethereum:** ${ETH_COUNT} positions" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -f data/arbitrum.json ]; then
+            ARB_COUNT=$(cat data/arbitrum.json | python -c "import sys, json; print(len(json.load(sys.stdin).get('positions', [])))")
+            echo "- **Arbitrum:** ${ARB_COUNT} positions" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -f data/polygon.json ]; then
+            POLY_COUNT=$(cat data/polygon.json | python -c "import sys, json; print(len(json.load(sys.stdin).get('positions', [])))")
+            echo "- **Polygon:** ${POLY_COUNT} positions" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -f data/base.json ]; then
+            BASE_COUNT=$(cat data/base.json | python -c "import sys, json; print(len(json.load(sys.stdin).get('positions', [])))")
+            echo "- **Base:** ${BASE_COUNT} positions" >> $GITHUB_STEP_SUMMARY
+          fi
