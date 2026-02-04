@@ -1,47 +1,14 @@
 {
-  "positions": [
-    {
-      "address": "0xbase1234567890abcdef1234567890abcdef12",
-      "healthFactor": 1.07,
-      "collateralValue": 620000,
-      "collateralAmount": 198,
-      "collateralAsset": "WETH",
-      "borrowValue": 480000,
-      "borrowAsset": "USDbC",
-      "liquidationThreshold": 0.83
-    },
-    {
-      "address": "0xbase2345678901bcdef12345678901bcdef123",
-      "healthFactor": 1.32,
-      "collateralValue": 340000,
-      "collateralAmount": 105,
-      "collateralAsset": "cbETH",
-      "borrowValue": 215000,
-      "borrowAsset": "USDC",
-      "liquidationThreshold": 0.80
-    },
-    {
-      "address": "0xbase3456789012cdef123456789012cdef1234",
-      "healthFactor": 1.14,
-      "collateralValue": 480000,
-      "collateralAmount": 153,
-      "collateralAsset": "WETH",
-      "borrowValue": 350000,
-      "borrowAsset": "DAI",
-      "liquidationThreshold": 0.83
-    }
-  ],
+  "positions": [],
   "meta": {
     "chain": "base",
-    "blockNumber": 12345678,
-    "timestamp": "2024-02-04T12:00:00Z",
-    "ethPriceUsd": 3125,
+    "timestamp": "2026-02-04T02:52:01.927524",
     "filters": {
       "maxHealthFactor": 1.5,
       "minCollateralUsd": 200000
     },
-    "totalPositions": 3,
-    "totalCollateralUsd": 1440000,
-    "totalBorrowUsd": 1045000
+    "totalPositions": 0,
+    "totalCollateralUsd": 0,
+    "totalBorrowUsd": 0
   }
 }
