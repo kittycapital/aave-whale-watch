@@ -103,11 +103,18 @@ function getHFStatus(hf) {
 /**
  * 청산가격 계산
  * 청산가격 = 대출금액 / (담보수량 × 청산임계값)
+ * Mixed 포지션은 계산 불가
  */
 function calculateLiquidationPrice(position) {
-    const { borrowValue, collateralAmount, liquidationThreshold } = position;
+    const { borrowValue, collateralAmount, liquidationThreshold, collateralAsset } = position;
     
-    if (!collateralAmount || !liquidationThreshold || collateralAmount === 0) {
+    // Mixed 포지션은 청산가격 계산 불가
+    if (collateralAsset === 'Mixed' || !collateralAsset) {
+        return null;
+    }
+    
+    // 담보수량이 1이면 실제 데이터가 아님 (placeholder)
+    if (!collateralAmount || collateralAmount <= 1 || !liquidationThreshold) {
         return null;
     }
     
