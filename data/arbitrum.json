@@ -1,0 +1,57 @@
+{
+  "positions": [
+    {
+      "address": "0xarb1234567890abcdef1234567890abcdef1234",
+      "healthFactor": 1.09,
+      "collateralValue": 450000,
+      "borrowValue": 340000,
+      "collateralAsset": "WETH",
+      "borrowAsset": "USDC"
+    },
+    {
+      "address": "0xarb2345678901bcdef12345678901bcdef12345",
+      "healthFactor": 1.22,
+      "collateralValue": 680000,
+      "borrowValue": 460000,
+      "collateralAsset": "WBTC",
+      "borrowAsset": "USDT"
+    },
+    {
+      "address": "0xarb3456789012cdef123456789012cdef123456",
+      "healthFactor": 1.15,
+      "collateralValue": 290000,
+      "borrowValue": 210000,
+      "collateralAsset": "ARB",
+      "borrowAsset": "USDC"
+    },
+    {
+      "address": "0xarb4567890123def1234567890123def1234567",
+      "healthFactor": 1.38,
+      "collateralValue": 520000,
+      "borrowValue": 310000,
+      "collateralAsset": "WETH",
+      "borrowAsset": "DAI"
+    },
+    {
+      "address": "0xarb5678901234ef12345678901234ef12345678",
+      "healthFactor": 1.06,
+      "collateralValue": 880000,
+      "borrowValue": 685000,
+      "collateralAsset": "wstETH",
+      "borrowAsset": "USDC"
+    }
+  ],
+  "meta": {
+    "chain": "arbitrum",
+    "blockNumber": 187654321,
+    "timestamp": "2024-02-04T12:00:00Z",
+    "ethPriceUsd": 3150,
+    "filters": {
+      "maxHealthFactor": 1.5,
+      "minCollateralUsd": 200000
+    },
+    "totalPositions": 5,
+    "totalCollateralUsd": 2820000,
+    "totalBorrowUsd": 2005000
+  }
+}
