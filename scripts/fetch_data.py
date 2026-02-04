@@ -12,21 +12,14 @@ from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
 # ===== Configuration =====
-# Aave V3 Subgraph Endpoints (The Graph Hosted Service - Free)
-SUBGRAPH_URLS = {
-    "ethereum": "https://api.thegraph.com/subgraphs/name/aave/protocol-v3",
-    "arbitrum": "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum",
-    "polygon": "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon",
-    "base": "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-base"
-}
+# The Graph Decentralized Network (requires API key)
+API_KEY = os.environ.get('GRAPH_API_KEY', '')
 
-# Alternative: The Graph Decentralized Network (requires API key, but more reliable)
-# If hosted service is deprecated, use these with GRAPH_API_KEY
-DECENTRALIZED_URLS = {
-    "ethereum": "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g",
-    "arbitrum": "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B",
-    "polygon": "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/H1sUFC6wxo3CmwwBLMwLNqp5pBhdfwYioUd3MYhXNsUi",
-    "base": "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF"
+SUBGRAPH_URLS = {
+    "ethereum": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g",
+    "arbitrum": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B",
+    "polygon": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/H1sUFC6wxo3CmwwBLMwLNqp5pBhdfwYioUd3MYhXNsUi",
+    "base": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF"
 }
 
 # Thresholds
@@ -305,6 +298,14 @@ def main():
     print("🐋 Aave Whale Watch - Data Fetcher")
     print("="*50)
     print(f"Timestamp: {datetime.utcnow().isoformat()}")
+    
+    # Check API Key
+    if not API_KEY:
+        print("⚠️  WARNING: GRAPH_API_KEY not set!")
+        print("Please set the environment variable GRAPH_API_KEY")
+        return
+    
+    print(f"✅ API Key configured: {API_KEY[:8]}...")
     
     # Create output directory
     os.makedirs(OUTPUT_DIR, exist_ok=True)
