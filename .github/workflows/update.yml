@@ -36,7 +36,7 @@ jobs:
           cd scripts
           python fetch_data.py
         env:
-          GRAPH_API_KEY: ${{ secrets.GRAPH_API_KEY }}
+          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           PYTHONUNBUFFERED: '1'
       
       - name: 📝 Check for changes
