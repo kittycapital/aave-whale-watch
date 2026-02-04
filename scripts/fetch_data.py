@@ -15,12 +15,15 @@ from urllib.error import URLError, HTTPError
 # The Graph Decentralized Network (requires API key)
 API_KEY = os.environ.get('GRAPH_API_KEY', '')
 
-SUBGRAPH_URLS = {
-    "ethereum": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g",
-    "arbitrum": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B",
-    "polygon": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/H1sUFC6wxo3CmwwBLMwLNqp5pBhdfwYioUd3MYhXNsUi",
-    "base": f"https://gateway.thegraph.com/api/{API_KEY}/subgraphs/id/GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF"
+# Subgraph IDs for Aave V3
+SUBGRAPH_IDS = {
+    "ethereum": "Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g",
+    "arbitrum": "DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B",
+    "polygon": "H1sUFC6wxo3CmwwBLMwLNqp5pBhdfwYioUd3MYhXNsUi",
+    "base": "GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF"
 }
+
+BASE_URL = "https://gateway.thegraph.com/api/subgraphs/id"
 
 # Thresholds
 MAX_HEALTH_FACTOR = 1.5
@@ -105,7 +108,8 @@ def fetch_graphql(url: str, query: str, variables: dict = None) -> dict:
     
     headers = {
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "Authorization": f"Bearer {API_KEY}"
     }
     
     req = Request(url, data=data, headers=headers, method='POST')
@@ -322,7 +326,8 @@ def main():
         'chains': {}
     }
     
-    for chain, url in SUBGRAPH_URLS.items():
+    for chain, subgraph_id in SUBGRAPH_IDS.items():
+        url = f"{BASE_URL}/{subgraph_id}"
         data = fetch_chain_data(chain, url, eth_price)
         
         # Save to file
