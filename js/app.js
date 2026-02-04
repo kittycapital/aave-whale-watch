@@ -1,6 +1,6 @@
 /**
- * 🐋 Aave Whale Watch - Dashboard App
- * 고래 포지션 & 청산 리스크 모니터링
+ * 🐋 AAVE 고래 트래커 - Dashboard App
+ * 대형 포지션 & 청산 리스크 모니터링
  */
 
 // ===== Configuration =====
@@ -29,7 +29,7 @@ const CONFIG = {
         warning: 1.3,
         safe: 1.5
     },
-    minWhaleValue: 200000 // $200K
+    minWhaleValue: 200000
 };
 
 // ===== State =====
@@ -64,7 +64,7 @@ async function loadData() {
 
 // ===== Helper Functions =====
 function formatNumber(num, decimals = 2) {
-    if (num === undefined || num === null) return '-';
+    if (num === undefined || num === null || isNaN(num)) return '-';
     if (num >= 1e9) return (num / 1e9).toFixed(decimals) + 'B';
     if (num >= 1e6) return (num / 1e6).toFixed(decimals) + 'M';
     if (num >= 1e3) return (num / 1e3).toFixed(decimals) + 'K';
@@ -72,8 +72,15 @@ function formatNumber(num, decimals = 2) {
 }
 
 function formatUSD(num) {
-    if (num === undefined || num === null) return '-';
+    if (num === undefined || num === null || isNaN(num)) return '-';
     return '$' + formatNumber(num);
+}
+
+function formatPrice(num) {
+    if (num === undefined || num === null || isNaN(num)) return '-';
+    if (num >= 1000) return '$' + num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    if (num >= 1) return '$' + num.toFixed(2);
+    return '$' + num.toFixed(4);
 }
 
 function shortenAddress(address) {
@@ -91,6 +98,21 @@ function getHFStatus(hf) {
     if (hf < CONFIG.hfThresholds.danger) return '위험';
     if (hf < CONFIG.hfThresholds.warning) return '주의';
     return '관찰';
+}
+
+/**
+ * 청산가격 계산
+ * 청산가격 = 대출금액 / (담보수량 × 청산임계값)
+ */
+function calculateLiquidationPrice(position) {
+    const { borrowValue, collateralAmount, liquidationThreshold } = position;
+    
+    if (!collateralAmount || !liquidationThreshold || collateralAmount === 0) {
+        return null;
+    }
+    
+    const liqPrice = borrowValue / (collateralAmount * liquidationThreshold);
+    return liqPrice;
 }
 
 function getAllPositions() {
@@ -173,7 +195,6 @@ function updateHeatmap() {
     const positions = getAllPositions();
     const grid = document.getElementById('heatmapGrid');
     
-    // Group by collateral asset and HF range
     const groups = {};
     
     positions.forEach(p => {
@@ -245,12 +266,16 @@ function updateWhaleList() {
     
     list.innerHTML = positions.map((p, i) => {
         const hfClass = getHFClass(p.healthFactor);
+        const liqPrice = calculateLiquidationPrice(p);
+        const liqPriceStr = liqPrice ? `청산가: ${formatPrice(liqPrice)}` : '';
+        
         return `
             <div class="whale-item">
                 <div class="whale-rank ${i < 3 ? 'top-3' : ''}">${i + 1}</div>
                 <div class="whale-info">
                     <span class="whale-address">${shortenAddress(p.address)}</span>
                     <span class="whale-assets">${p.collateralAsset} → ${p.borrowAsset}</span>
+                    ${liqPriceStr ? `<span class="whale-liq-price">⚠️ ${liqPriceStr}</span>` : ''}
                 </div>
                 <div class="whale-value">
                     <span class="whale-amount">${formatUSD(p.collateralValue)}</span>
@@ -269,7 +294,6 @@ function updateAssetChart() {
     const positions = getAllPositions();
     const ctx = document.getElementById('assetChart').getContext('2d');
     
-    // Aggregate by asset
     const assetKey = state.assetType === 'collateral' ? 'collateralAsset' : 'borrowAsset';
     const valueKey = state.assetType === 'collateral' ? 'collateralValue' : 'borrowValue';
     
@@ -314,7 +338,7 @@ function updateAssetChart() {
                 legend: {
                     position: 'right',
                     labels: {
-                        color: '#94a3b8',
+                        color: '#a0a0a0',
                         font: { family: "'Noto Sans KR', sans-serif", size: 11 },
                         padding: 10,
                         usePointStyle: true,
@@ -322,10 +346,10 @@ function updateAssetChart() {
                     }
                 },
                 tooltip: {
-                    backgroundColor: '#1e1e2a',
+                    backgroundColor: '#1a1a1a',
                     titleColor: '#fff',
-                    bodyColor: '#94a3b8',
-                    borderColor: '#2a2a3a',
+                    bodyColor: '#a0a0a0',
+                    borderColor: '#222',
                     borderWidth: 1,
                     callbacks: {
                         label: (context) => {
@@ -337,7 +361,6 @@ function updateAssetChart() {
         }
     });
     
-    // Update utilization list
     updateUtilizationList(sortedAssets);
 }
 
@@ -403,25 +426,25 @@ function updateChainChart() {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    grid: { color: '#2a2a3a' },
-                    ticks: { color: '#94a3b8' }
+                    grid: { color: '#222' },
+                    ticks: { color: '#a0a0a0' }
                 },
                 y: {
-                    grid: { color: '#2a2a3a' },
+                    grid: { color: '#222' },
                     ticks: {
-                        color: '#94a3b8',
+                        color: '#a0a0a0',
                         callback: (value) => formatUSD(value)
                     }
                 }
             },
             plugins: {
                 legend: {
-                    labels: { color: '#94a3b8' }
+                    labels: { color: '#a0a0a0' }
                 },
                 tooltip: {
-                    backgroundColor: '#1e1e2a',
+                    backgroundColor: '#1a1a1a',
                     titleColor: '#fff',
-                    bodyColor: '#94a3b8',
+                    bodyColor: '#a0a0a0',
                     callbacks: {
                         label: (context) => ` ${context.dataset.label}: ${formatUSD(context.raw)}`
                     }
@@ -430,7 +453,6 @@ function updateChainChart() {
         }
     });
     
-    // Update chain cards
     updateChainCards(chainData);
 }
 
@@ -461,7 +483,6 @@ function updateChainCards(chainData) {
 function updatePositionTable() {
     const positions = getAllPositions();
     
-    // Sort
     const sorted = [...positions].sort((a, b) => {
         switch (state.sortBy) {
             case 'hf-asc': return a.healthFactor - b.healthFactor;
@@ -477,7 +498,7 @@ function updatePositionTable() {
     if (sorted.length === 0) {
         table.innerHTML = `
             <tr>
-                <td colspan="8" class="empty-state">
+                <td colspan="9" class="empty-state">
                     <div class="empty-state-icon">📋</div>
                     <p>표시할 포지션이 없습니다</p>
                 </td>
@@ -488,6 +509,9 @@ function updatePositionTable() {
     
     table.innerHTML = sorted.slice(0, 50).map(p => {
         const hfClass = getHFClass(p.healthFactor);
+        const liqPrice = calculateLiquidationPrice(p);
+        const liqPriceStr = liqPrice ? `${p.collateralAsset} ${formatPrice(liqPrice)}` : '-';
+        
         return `
             <tr>
                 <td><span class="chain-badge ${p.chain}">${CONFIG.chainIcons[p.chain]} ${CONFIG.chainNames[p.chain]}</span></td>
@@ -497,6 +521,7 @@ function updatePositionTable() {
                 <td class="amount-cell">${formatUSD(p.collateralValue)}</td>
                 <td>${p.borrowAsset || '-'}</td>
                 <td class="amount-cell">${formatUSD(p.borrowValue)}</td>
+                <td class="liq-price-cell">${liqPriceStr}</td>
                 <td><span class="status-cell ${hfClass}">${getHFStatus(p.healthFactor)}</span></td>
             </tr>
         `;
@@ -505,7 +530,6 @@ function updatePositionTable() {
 
 // ===== Event Handlers =====
 function initEventListeners() {
-    // Chain tabs
     document.querySelectorAll('.chain-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.chain-tab').forEach(t => t.classList.remove('active'));
@@ -515,7 +539,6 @@ function initEventListeners() {
         });
     });
     
-    // Asset type tabs
     document.querySelectorAll('.card-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.card-tab').forEach(t => t.classList.remove('active'));
@@ -525,14 +548,12 @@ function initEventListeners() {
         });
     });
     
-    // Sort select
     document.getElementById('sortSelect').addEventListener('change', (e) => {
         state.sortBy = e.target.value;
         updatePositionTable();
     });
 }
 
-// ===== Error Handling =====
 function showError() {
     document.querySelectorAll('.card-body').forEach(body => {
         body.innerHTML = `
