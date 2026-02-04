@@ -4,72 +4,88 @@
       "address": "0x1234567890abcdef1234567890abcdef12345678",
       "healthFactor": 1.05,
       "collateralValue": 1250000,
-      "borrowValue": 980000,
+      "collateralAmount": 400,
       "collateralAsset": "WETH",
-      "borrowAsset": "USDC"
+      "borrowValue": 980000,
+      "borrowAsset": "USDC",
+      "liquidationThreshold": 0.83
     },
     {
       "address": "0xabcdef1234567890abcdef1234567890abcdef12",
       "healthFactor": 1.12,
       "collateralValue": 890000,
-      "borrowValue": 650000,
+      "collateralAmount": 12.5,
       "collateralAsset": "WBTC",
-      "borrowAsset": "DAI"
+      "borrowValue": 650000,
+      "borrowAsset": "DAI",
+      "liquidationThreshold": 0.78
     },
     {
       "address": "0x2345678901bcdef12345678901bcdef123456789",
       "healthFactor": 1.08,
       "collateralValue": 2100000,
-      "borrowValue": 1600000,
+      "collateralAmount": 680,
       "collateralAsset": "WETH",
-      "borrowAsset": "USDT"
+      "borrowValue": 1600000,
+      "borrowAsset": "USDT",
+      "liquidationThreshold": 0.83
     },
     {
       "address": "0x3456789012cdef123456789012cdef1234567890",
       "healthFactor": 1.25,
       "collateralValue": 560000,
-      "borrowValue": 380000,
+      "collateralAmount": 175,
       "collateralAsset": "stETH",
-      "borrowAsset": "USDC"
+      "borrowValue": 380000,
+      "borrowAsset": "USDC",
+      "liquidationThreshold": 0.80
     },
     {
       "address": "0x4567890123def1234567890123def12345678901",
       "healthFactor": 1.35,
       "collateralValue": 420000,
-      "borrowValue": 260000,
+      "collateralAmount": 6.2,
       "collateralAsset": "WBTC",
-      "borrowAsset": "DAI"
+      "borrowValue": 260000,
+      "borrowAsset": "DAI",
+      "liquidationThreshold": 0.78
     },
     {
       "address": "0x5678901234ef12345678901234ef123456789012",
       "healthFactor": 1.42,
       "collateralValue": 780000,
-      "borrowValue": 450000,
+      "collateralAmount": 250,
       "collateralAsset": "WETH",
-      "borrowAsset": "USDC"
+      "borrowValue": 450000,
+      "borrowAsset": "USDC",
+      "liquidationThreshold": 0.83
     },
     {
       "address": "0x6789012345f123456789012345f1234567890123",
       "healthFactor": 1.18,
       "collateralValue": 1500000,
-      "borrowValue": 1050000,
+      "collateralAmount": 465,
       "collateralAsset": "wstETH",
-      "borrowAsset": "USDT"
+      "borrowValue": 1050000,
+      "borrowAsset": "USDT",
+      "liquidationThreshold": 0.80
     },
     {
       "address": "0x7890123456012345678901234560123456789012",
       "healthFactor": 1.03,
       "collateralValue": 320000,
-      "borrowValue": 255000,
+      "collateralAmount": 102,
       "collateralAsset": "WETH",
-      "borrowAsset": "DAI"
+      "borrowValue": 255000,
+      "borrowAsset": "DAI",
+      "liquidationThreshold": 0.83
     }
   ],
   "meta": {
     "chain": "ethereum",
     "blockNumber": 19234567,
     "timestamp": "2024-02-04T12:00:00Z",
-    "ethPriceUsd": 3150,
+    "ethPriceUsd": 3125,
     "filters": {
       "maxHealthFactor": 1.5,
       "minCollateralUsd": 200000
