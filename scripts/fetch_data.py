@@ -76,8 +76,8 @@ def get_logs(rpc_url: str, contract_address: str, topics: list, from_block: str,
     return result if result else []
 
 
-def get_recent_block(rpc_url: str, blocks_ago: int = 50000) -> str:
-    """Get a recent block number"""
+def get_recent_block(rpc_url: str, blocks_ago: int = 10000) -> str:
+    """Get a recent block number - reduced range for Alchemy limits"""
     current = rpc_call(rpc_url, "eth_blockNumber", [])
     if current:
         block_num = int(current, 16) - blocks_ago
@@ -140,25 +140,49 @@ def fetch_borrowers_from_events(rpc_url: str, pool_address: str, limit: int = 30
     # Borrow event topic (Aave V3)
     borrow_topic = "0xb3d084820fb1a9decffb176436bd02558d15fac9b0ddfed8c465bc7359d7dce0"
     
-    # Get recent blocks
-    from_block = get_recent_block(rpc_url, 50000)
-    
-    print(f"    Fetching Borrow events from block {from_block}...")
-    
-    logs = get_logs(rpc_url, pool_address, [borrow_topic], from_block)
-    
     borrowers = set()
-    for log in logs:
-        if len(log.get('topics', [])) >= 3:
-            # onBehalfOf is the 3rd topic (index 2)
-            user = decode_address_from_topic(log['topics'][2])
-            if user:
-                borrowers.add(user.lower())
-        
-        if len(borrowers) >= limit:
-            break
     
-    print(f"    Found {len(borrowers)} unique borrowers from events")
+    # Get current block
+    current_block = rpc_call(rpc_url, "eth_blockNumber", [])
+    if not current_block:
+        print("    Failed to get current block")
+        return borrowers
+    
+    current = int(current_block, 16)
+    
+    # Query in smaller chunks (2000 blocks each) to avoid Alchemy limits
+    chunk_size = 2000
+    chunks_to_query = 5  # 5 chunks = 10,000 blocks total
+    
+    for i in range(chunks_to_query):
+        from_block = current - (i + 1) * chunk_size
+        to_block = current - i * chunk_size
+        
+        if from_block < 0:
+            break
+            
+        print(f"    Fetching events: blocks {from_block} to {to_block}...")
+        
+        try:
+            logs = get_logs(rpc_url, pool_address, [borrow_topic], hex(from_block), hex(to_block))
+            
+            if logs:
+                for log in logs:
+                    if len(log.get('topics', [])) >= 3:
+                        user = decode_address_from_topic(log['topics'][2])
+                        if user:
+                            borrowers.add(user.lower())
+                
+                print(f"    Found {len(logs)} events, {len(borrowers)} unique borrowers so far")
+            
+            if len(borrowers) >= limit:
+                break
+                
+        except Exception as e:
+            print(f"    Error fetching chunk: {e}")
+            continue
+    
+    print(f"    Total unique borrowers: {len(borrowers)}")
     return borrowers
 
 
