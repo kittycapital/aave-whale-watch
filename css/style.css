@@ -1,14 +1,14 @@
 /* ===================================
-   🐋 Aave Whale Watch - Styles
-   Cyberpunk Dark Theme
+   🐋 AAVE 고래 트래커 - Styles
+   Simple Black Theme
 =================================== */
 
 :root {
     /* Colors */
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #12121a;
-    --bg-card: #16161f;
-    --bg-hover: #1e1e2a;
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-card: #111111;
+    --bg-hover: #1a1a1a;
     
     --accent-cyan: #00f0ff;
     --accent-purple: #a855f7;
@@ -19,10 +19,10 @@
     --accent-orange: #f97316;
     
     --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-secondary: #a0a0a0;
+    --text-muted: #666666;
     
-    --border-color: #2a2a3a;
+    --border-color: #222222;
     --border-glow: rgba(0, 240, 255, 0.3);
     
     /* Chain Colors */
@@ -30,12 +30,6 @@
     --chain-arbitrum: #28a0f0;
     --chain-polygon: #8247e5;
     --chain-base: #0052ff;
-    
-    /* Gradients */
-    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    --gradient-warning: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-    --gradient-safe: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    --gradient-primary: linear-gradient(135deg, #00f0ff 0%, #a855f7 100%);
     
     /* Typography */
     --font-display: 'Orbitron', sans-serif;
@@ -78,48 +72,8 @@ body {
     overflow-x: hidden;
 }
 
-/* Background Effects */
-.bg-grid {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.bg-glow {
-    position: fixed;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(150px);
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.glow-1 {
-    top: -200px;
-    right: -200px;
-    background: var(--accent-cyan);
-}
-
-.glow-2 {
-    bottom: -200px;
-    left: -200px;
-    background: var(--accent-purple);
-}
-
 /* Container */
 .container {
-    position: relative;
-    z-index: 1;
     max-width: 1600px;
     margin: 0 auto;
     padding: var(--space-lg);
@@ -153,19 +107,10 @@ body {
 
 .logo-icon {
     font-size: 2.5rem;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
 }
 
 .logo-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent-cyan);
 }
 
 .subtitle {
@@ -225,6 +170,67 @@ body {
     50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
 }
 
+/* Explanation Box */
+.explanation-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.explanation-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--accent-cyan);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.explanation-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+}
+
+.explanation-item {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.explanation-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.explanation-text h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.explanation-text p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.explanation-formula {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.explanation-formula code {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-yellow);
+}
+
 /* Chain Tabs */
 .chain-tabs {
     display: flex;
@@ -262,7 +268,6 @@ body {
     background: var(--bg-card);
     border-color: var(--accent-cyan);
     color: var(--accent-cyan);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
 }
 
 .chain-icon {
@@ -298,24 +303,13 @@ body {
 
 .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--border-glow);
 }
 
-.stat-card.danger {
-    border-left: 4px solid var(--accent-red);
-}
-
-.stat-card.warning {
-    border-left: 4px solid var(--accent-orange);
-}
-
-.stat-card.info {
-    border-left: 4px solid var(--accent-cyan);
-}
-
-.stat-card.primary {
-    border-left: 4px solid var(--accent-purple);
-}
+.stat-card.danger { border-left: 4px solid var(--accent-red); }
+.stat-card.warning { border-left: 4px solid var(--accent-orange); }
+.stat-card.info { border-left: 4px solid var(--accent-cyan); }
+.stat-card.primary { border-left: 4px solid var(--accent-purple); }
 
 .stat-icon {
     font-size: 2rem;
@@ -375,7 +369,6 @@ body {
 
 .card:hover {
     border-color: var(--border-glow);
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
 }
 
 .card-header {
@@ -465,9 +458,9 @@ body {
     border-radius: var(--radius-sm);
 }
 
-.legend-color.danger { background: var(--gradient-danger); }
-.legend-color.warning { background: var(--gradient-warning); }
-.legend-color.safe { background: var(--gradient-safe); }
+.legend-color.danger { background: var(--accent-red); }
+.legend-color.warning { background: var(--accent-orange); }
+.legend-color.safe { background: var(--accent-green); }
 
 .heatmap-grid {
     display: grid;
@@ -582,6 +575,12 @@ body {
 .whale-assets {
     font-size: 0.8rem;
     color: var(--text-muted);
+}
+
+.whale-liq-price {
+    font-size: 0.75rem;
+    color: var(--accent-red);
+    font-family: var(--font-mono);
 }
 
 .whale-value {
@@ -821,6 +820,12 @@ body {
     font-family: var(--font-mono);
 }
 
+.liq-price-cell {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-red);
+}
+
 .status-cell {
     display: inline-block;
     padding: 4px 12px;
@@ -874,29 +879,6 @@ body {
     opacity: 0.5;
 }
 
-/* Loading State */
-.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-sm);
-    padding: var(--space-xl);
-    color: var(--text-muted);
-}
-
-.loading-spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-color);
-    border-top-color: var(--accent-cyan);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -925,6 +907,10 @@ body {
     
     .stats-row {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .explanation-content {
+        grid-template-columns: 1fr;
     }
 }
 
