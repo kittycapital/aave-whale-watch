@@ -2,7 +2,7 @@
 🐋 Aave Whale Watch - Data Fetcher (Alchemy Version)
 Alchemy RPC를 통해 Aave V3 포지션 데이터 수집
 
-Health Factor <= 1.5 & 담보 >= $200K 필터링
+Health Factor <= 2 & 담보 >= $100K 필터링
 """
 
 import json
@@ -31,8 +31,8 @@ AAVE_POOL_ADDRESSES = {
 }
 
 # Thresholds
-MAX_HEALTH_FACTOR = 1.5
-MIN_COLLATERAL_USD = 200000  # $200K
+MAX_HEALTH_FACTOR = 2
+MIN_COLLATERAL_USD = 100000  # $100K
 
 OUTPUT_DIR = "../data"
 
