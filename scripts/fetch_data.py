@@ -34,7 +34,7 @@ AAVE_POOL_ADDRESSES = {
 MAX_HEALTH_FACTOR = 1.5
 MIN_COLLATERAL_USD = 200000  # $200K
 
-OUTPUT_DIR = "data"
+OUTPUT_DIR = "../data"
 
 
 def rpc_call(url: str, method: str, params: list) -> dict:
