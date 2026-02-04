@@ -171,7 +171,8 @@ def process_user_data(users: list, eth_price_usd: float = 3000) -> list:
                         'symbol': symbol,
                         'amount': atoken_balance,
                         'valueEth': collateral_eth,
-                        'valueUsd': collateral_eth * eth_price_usd
+                        'valueUsd': collateral_eth * eth_price_usd,
+                        'liqThreshold': liq_threshold
                     })
                     total_collateral_eth += collateral_eth
                     weighted_liq_threshold += collateral_eth * liq_threshold
@@ -213,13 +214,20 @@ def process_user_data(users: list, eth_price_usd: float = 3000) -> list:
             primary_collateral = max(collateral_assets, key=lambda x: x['valueUsd'])['symbol'] if collateral_assets else 'Unknown'
             primary_borrow = max(borrow_assets, key=lambda x: x['valueUsd'])['symbol'] if borrow_assets else 'Unknown'
             
+            # Get primary collateral details for liquidation price calculation
+            primary_collateral_data = max(collateral_assets, key=lambda x: x['valueUsd']) if collateral_assets else {}
+            collateral_amount = primary_collateral_data.get('amount', 0)
+            liq_threshold = primary_collateral_data.get('liqThreshold', 0.8)
+            
             positions.append({
                 'address': user['id'],
                 'healthFactor': round(health_factor, 4),
                 'collateralValue': round(collateral_usd, 2),
-                'borrowValue': round(debt_usd, 2),
+                'collateralAmount': round(collateral_amount, 6),
                 'collateralAsset': primary_collateral,
+                'borrowValue': round(debt_usd, 2),
                 'borrowAsset': primary_borrow,
+                'liquidationThreshold': round(liq_threshold, 4),
                 'collateralAssets': collateral_assets,
                 'borrowAssets': borrow_assets
             })
