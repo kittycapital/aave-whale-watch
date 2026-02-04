@@ -2,10 +2,10 @@
   "positions": [],
   "meta": {
     "chain": "base",
-    "timestamp": "2026-02-04T02:52:01.927524",
+    "timestamp": "2026-02-04T03:07:50.372124",
     "filters": {
-      "maxHealthFactor": 1.5,
-      "minCollateralUsd": 200000
+      "maxHealthFactor": 2,
+      "minCollateralUsd": 100000
     },
     "totalPositions": 0,
     "totalCollateralUsd": 0,
