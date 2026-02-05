@@ -2,7 +2,7 @@
   "positions": [],
   "meta": {
     "chain": "polygon",
-    "timestamp": "2026-02-05T14:34:13.661730",
+    "timestamp": "2026-02-05T18:32:22.820243",
     "filters": {
       "maxHealthFactor": 2,
       "minCollateralUsd": 100000
