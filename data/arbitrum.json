@@ -2,7 +2,7 @@
   "positions": [],
   "meta": {
     "chain": "arbitrum",
-    "timestamp": "2026-02-10T11:15:15.918437",
+    "timestamp": "2026-02-10T15:48:05.872504",
     "filters": {
       "maxHealthFactor": 2,
       "minCollateralUsd": 100000
