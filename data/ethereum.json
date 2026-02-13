@@ -2,9 +2,9 @@
   "positions": [
     {
       "address": "0xb7b7eb7e9611975bc9715f22ce7e6ee288296fd4",
-      "healthFactor": 1.1037,
-      "collateralValue": 13410600.11,
-      "borrowValue": 9842427.75,
+      "healthFactor": 1.1187,
+      "collateralValue": 13593651.65,
+      "borrowValue": 9842770.63,
       "liquidationThreshold": 0.81,
       "collateralAsset": "Mixed",
       "borrowAsset": "Mixed",
@@ -13,13 +13,13 @@
   ],
   "meta": {
     "chain": "ethereum",
-    "timestamp": "2026-02-12T21:05:34.387488",
+    "timestamp": "2026-02-13T05:12:57.706528",
     "filters": {
       "maxHealthFactor": 2,
       "minCollateralUsd": 100000
     },
     "totalPositions": 1,
-    "totalCollateralUsd": 13410600.11,
-    "totalBorrowUsd": 9842427.75
+    "totalCollateralUsd": 13593651.65,
+    "totalBorrowUsd": 9842770.63
   }
 }
